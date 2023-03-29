@@ -518,3 +518,13 @@ class TestGrafo(unittest.TestCase):
         self.assertEqual(set(self.g_eu4.euler()), set(['A', 'a1', 'B', 'a6', 'E', 'a5', 'C', 'a2', 'A', 'a4', 'D', 'a8', 'G', 'a7', 'B', 'a3', 'F']))
         self.assertFalse(self.g_p.euler())
         self.assertEqual(set(self.g_eu5.euler()), set(['1', 'a1', '2', 'a2', '3', 'a3', '1', 'a4', '4']))
+    def prim(self):
+      self.assertEqual(self.g_d2_Jk2.Prim(), self.PriK1)
+      self.assertEqual(self.g_d2_Jk3.Prim(), self.KrusP1)
+      self.assertEqual(self.g_d2_J.Prim(), self.g_d2_Jd)
+      self.assertEqual(self.g_pp.Prim(), self.g_ppp)
+    def Kruskal(self):
+      self.assertEqual(self.g_d2_Jk2.Kruskal(), self.Prik1)
+      self.assertEqual(self.g_d2_Jk3.Kruskal(), self.KrusP1)
+      self.assertEqual(self.g_d2_J.Kruskal(), self.g_d2_Jd)
+      self.assertEqual(self.g_pp.Kruskal(), self.g_ppp)
