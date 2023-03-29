@@ -457,3 +457,101 @@ class MeuGrafo(GrafoListaAdjacencia):
                     else:
                         self.adicionaAresta(h, u, v)
                         continue
+    def Prim(self):
+      if (self.conexo() == False) or len(self.A) == 0:
+        return False
+      V =self.N.copy()
+      E= self.A.copy()
+      Jet = []
+      P = []
+      Comp = []
+      Novo = MeuGrafo()
+      aux = []
+      As = []
+      for a in E:
+        if E[a].getV1() != E[a].getV2():
+          Jet.append(E[a].getPeso())
+          aux.append(a)
+      indice = Jet.index(min(Jet))
+      P.append(E[aux[indice]].getV1())
+      Novo.adicionaVertice(P[0])
+      V.pop(V.index(P[0]))
+      while len(V)> 0:
+         Ares = self.arestas_sobre_vertice(P[-1])
+         for b in Ares:
+           if (b not in As) and (b not in Novo.A) and (E[b].getV1() != E[b].getV2()) and (b in aux):
+             As.append(b)
+             Comp.append(Jet[aux.index(b)])
+         c = As[Comp.index(min(Comp))]
+         if (E[c].getV1()not in Novo.N) or (E[c].getV2() not in Novo.N):
+           if E[c].getV1() not in P:
+              P.append(E[c].getV1())
+              V.remove(E[c].getV1())
+           else:
+              P.append(E[c].getV2())
+              V.remove(E[c].getV2())
+           Novo.adicionaVertice(P[-1])
+           Novo.adicionaAresta(c,E[c].getV1(),E[c].getV2(),min(Comp))
+           Comp.pop(As.index(c))
+           As.remove(c)
+           Jet.pop(aux.index(c))
+           aux.pop(aux.index(c))
+         else:
+           Comp.pop(As.index(c))
+           As.remove(c)
+           Jet.pop(aux.index(c))
+           aux.pop(aux.index(c))
+      return Novo
+
+    def Kruskal(self):
+      if (self.conexo() == False) or len(self.A) == 0:
+        return False
+      V =self.N.copy()
+      Pesos = []
+      Arestas = []
+      Novo = MeuGrafo()
+      PesosL = []
+      ArestasL = []
+      Des = []
+      Vr = []
+      for a in self.A:
+        if self.A[a].getV1() != self.A[a].getV2():
+          PesosL.append(self.A[a].getPeso())
+          ArestasL.append(a)
+      while len(ArestasL) != 0:
+          indice = PesosL.index(min(PesosL))
+          Pesos.append(PesosL[indice])
+          Arestas.append(ArestasL[indice])
+          PesosL.pop(indice)
+          ArestasL.pop(indice)
+      while len(V)>0:
+        C = Arestas[0]
+        if (self.A[C].getV1() not in Novo.N) or (self.A[C].getV2() not in Novo.N):
+          if self.A[C].getV2() in Novo.N:
+            V.remove(self.A[C].getV1())
+            Novo.adicionaVertice(self.A[C].getV1())
+          elif self.A[C].getV1() in Novo.N:
+            V.remove(self.A[C].getV2())
+            Novo.adicionaVertice(self.A[C].getV2())
+          else:
+            V.remove(self.A[C].getV1())
+            V.remove(self.A[C].getV2())
+            Novo.adicionaVertice(self.A[C].getV1())
+            Novo.adicionaVertice(self.A[C].getV2())
+          Novo.adicionaAresta(C,self.A[C].getV1(),self.A[C].getV2(),Pesos[0])
+          Pesos.pop(0)
+          Arestas.pop(0)
+        else:
+           Pesos.pop(0)
+           Arestas.pop(0)
+      Des = Novo.desconexo()
+      while Des!= False:
+        self.Notdes(Novo,Arestas,Pesos,ArestasL,PesosL,Vr,Des)
+        Pesos = []
+        Arestas = []
+        PesosL = []
+        ArestasL = []
+        Des = []
+        Vr = []
+        Des = Novo.desconexo()
+      return Novo
